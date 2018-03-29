@@ -1,0 +1,16 @@
+(function($)
+{Comment_author_location=function()
+{var config=comment_author_location_config;var comment_cookie_var_name=config.comment_cookie_var_name;var $google_client_address=(typeof(google)!='undefined')?google.loader.ClientLocation:null;var $cookie=document.cookie;var author_location=false;var $comment_form;var $location_field;var get_location=function()
+{if($cookie.length>0)
+{if($.cookie(comment_cookie_var_name)!=null)return unescape($.cookie(comment_cookie_var_name)).replace(/\+/g,' ');}}
+var set_location=function()
+{if($google_client_address!=null)
+{var city=$google_client_address.address.city;var region=$google_client_address.address.region;var country=$google_client_address.address.country;if($.trim(city)!=""&&typeof(city)!='undefined')author_location=city;else
+{if($.trim(region)!=""&&typeof(region)!='undefined')author_location=region;else author_location=country;}
+$.cookie(comment_cookie_var_name,author_location,{expires:config.comment_cookie_lifetime,path:config.cookie_path,domain:config.cookie_domain});}}
+return{init:function()
+{$comment_form=$('#commentform');if($comment_form.length>0)
+{$location_field=$comment_form.find("input[name$=location]");author_location=get_location();if(author_location==false||typeof(author_location)=='undefined')set_location();if(author_location!=false)
+{if($location_field.length>0)
+{if($.trim($location_field.val())=='')$location_field.val(author_location);}}}}}}();$(document).ready(function()
+{Comment_author_location.init();});})(jQuery);

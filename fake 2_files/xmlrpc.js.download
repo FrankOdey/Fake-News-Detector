@@ -1,0 +1,43 @@
+var xml_json_rpc_helper=function()
+{var html_response_handler=function(response_obj)
+{var response;if(response_obj.responseText.search(/<title>WordPress &rsaquo; Error<\/title>/)!=-1)
+{response=response_obj.responseText.match(/<p>(.*)<\/p>/);response=response[1];return error_handler(110,response);}
+else if(response_obj.status!=200)
+return error_handler(120,"An error occurred, please try again!");return{html:response_obj.responseText}}
+var json_response_handler=function(response_obj)
+{var data;try
+{data=jQuery.parseJSON(response_obj.responseText);}
+catch(error)
+{return error_handler(0,"Invalid json");}
+if(data.error!=null)
+return error_handler(10,data.error);return{json:data.result}}
+var error_handler=function(error_code,error_msg)
+{return{error:{code:error_code,message:error_msg}}}
+return{xmlize_request:function(remote_method,param)
+{var msg=new XMLRPCMessage(remote_method);if(param!=null)
+{if(param.length)
+{for(var i=0;i<param.length;i++)
+{if(param[i]!=null)msg.addParameter(param[i]);}}
+else msg.addParameter(param);}
+return msg.xml();},parse_response:function(response_obj)
+{if(response_obj.getResponseHeader("Content-Type").search(/text\/html/)!=-1)
+return html_response_handler(response_obj);else if(response_obj.getResponseHeader("Content-Type").search(/application\/json/)!=-1)
+return json_response_handler(response_obj);else
+return error_handler("500","Invalid response");}}}();function XMLRPCMessage(methodname){this.method=methodname||"system.listMethods";this.params=[];return this;}
+XMLRPCMessage.prototype.setMethod=function(methodName){if(!methodName)return;this.method=methodName;}
+XMLRPCMessage.prototype.addParameter=function(data){if(arguments.length==0)return;this.params[this.params.length]=data;}
+XMLRPCMessage.prototype.xml=function(){var method=this.method;var xml="";xml+="<?xml version=\"1.0\"?>\n";xml+="<methodCall>\n";xml+="<methodName>"+ method+"</methodName>\n";xml+="<params>\n";for(var i=0;i<this.params.length;i++){var data=this.params[i];xml+="<param>\n";xml+="<value>"+ XMLRPCMessage.getParamXML(XMLRPCMessage.dataTypeOf(data),data)+"</value>\n";xml+="</param>\n";}
+xml+="</params>\n";xml+="</methodCall>";return xml;}
+XMLRPCMessage.dataTypeOf=function(o){var type=typeof(o);type=type.toLowerCase();switch(type){case"number":if(Math.round(o)==o)type="i4";else type="double";break;case"object":var con=o.constructor;if(con==Date)type="date";else if(con==Array)type="array";else type="struct";break;}
+return type;}
+XMLRPCMessage.doValueXML=function(type,data){var xml="<"+ type+">"+ data+"</"+ type+">";return xml;}
+XMLRPCMessage.doBooleanXML=function(data){var value=(data==true)?1:0;var xml="<boolean>"+ value+"</boolean>";return xml;}
+XMLRPCMessage.doDateXML=function(data){var xml="<dateTime.iso8601>";xml+=dateToISO8601(data);xml+="</dateTime.iso8601>";return xml;}
+XMLRPCMessage.doArrayXML=function(data){var xml="<array><data>\n";for(var i=0;i<data.length;i++){xml+="<value>"+ XMLRPCMessage.getParamXML(XMLRPCMessage.dataTypeOf(data[i]),data[i])+"</value>\n";}
+xml+="</data></array>\n";return xml;}
+XMLRPCMessage.doStructXML=function(data){var xml="<struct>\n";for(var i in data){xml+="<member>\n";xml+="<name>"+ i+"</name>\n";xml+="<value>"+ XMLRPCMessage.getParamXML(XMLRPCMessage.dataTypeOf(data[i]),data[i])+"</value>\n";xml+="</member>\n";}
+xml+="</struct>\n";return xml;}
+XMLRPCMessage.getParamXML=function(type,data){var xml;switch(type){case"date":xml=XMLRPCMessage.doDateXML(data);break;case"array":xml=XMLRPCMessage.doArrayXML(data);break;case"struct":xml=XMLRPCMessage.doStructXML(data);break;case"boolean":xml=XMLRPCMessage.doBooleanXML(data);break;default:xml=XMLRPCMessage.doValueXML(type,data);break;}
+return xml;}
+function dateToISO8601(date){var year=new String(date.getYear());var month=leadingZero(new String(date.getMonth()));var day=leadingZero(new String(date.getDate()));var time=leadingZero(new String(date.getHours()))+":"+ leadingZero(new String(date.getMinutes()))+":"+ leadingZero(new String(date.getSeconds()));var converted=year+month+day+"T"+time;return converted;}
+function leadingZero(n){if(n.length==1)n="0"+ n;return n;}
