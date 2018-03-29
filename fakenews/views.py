@@ -63,3 +63,7 @@ def logout_view(request):
 
 def register_view(request):
     title
+
+def voting_view(request):
+    urls = Url.objects.all()
+    return render(request,"fakenews/voting.html",{'urls':urls})

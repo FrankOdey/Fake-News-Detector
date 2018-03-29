@@ -10,4 +10,5 @@ urlpatterns = [
     path('classifyurl', views.classify_url, name="classifyurl"),
     path('logout', views.logout_view, name="logout"),
     path('signup', views.signup, name="signup"),
+    path('voting', views.voting_view, name="voting"),
 ]

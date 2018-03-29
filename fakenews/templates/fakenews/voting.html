@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Fake News Detection</title>
+</head>
+	<body>
+	 <table style="width:100%">
+	  <tr>
+	    <th>Url</th>
+	    <th>Title</th>
+	    <th>Classification</th> 
+	    <th>Votes</th>
+	  </tr>
+	 {% for o in urls %}
+	  <tr>
+	    <td>{{o.Url}}</td>
+	    <td>{{o.Title}}</td> 
+	    <td>{{o.Classification}}</td>
+	    <td>{{o.Voting}}</td>
+	  </tr>
+	 {% endfor %}
+	</table>
+	
+</body>
+</html>

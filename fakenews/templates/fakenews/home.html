@@ -41,6 +41,7 @@ button:hover {opacity: 1}
         {% if user.is_authenticated %}
         <li>User: {{ user.get_username }}</li>
         <li id="page1"><a href="/logout">Logout</a></li>
+        <li id="page1"><a href="/voting">Votings</a></li>
         {% else %}
         <li id="page1"><a href="/accounts/login">Login</a></li>
         <li id="page3"><a href="/signup">SignUp</a></li>    
