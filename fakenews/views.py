@@ -74,16 +74,28 @@ def voting_view(request):
 def upvote(request):
     id = request.GET.get('id')
     u1 = Url.objects.get(pk=id)
-    u1.Voting+=1
+    u1.Likes+=1
     u1.save()
-    data = serializers.serialize("json", [Url.objects.filter(pk=id).first()])
-    print(data)
+    if (u1.Dislikes+u1.Likes) > 0:
+        u1.Rating = u1.Likes/(u1.Dislikes+u1.Likes)
+        u1.save()
+        data = u1.Rating
+    else:
+        data=0
+    # data = serializers.serialize("json", [Url.objects.filter(pk=id).first()])
+    # print(data)
     return JsonResponse(data,safe=False)
 def downvote(request):
     id = request.GET.get('id')
     u1 = Url.objects.get(pk=id)
-    u1.Voting-=1
+    u1.Dislikes+=1
     u1.save()
-    data = serializers.serialize("json", [Url.objects.filter(pk=id).first()])
+    if (u1.Dislikes+u1.Likes) > 0:
+        u1.Rating = u1.Likes/(u1.Dislikes+u1.Likes)
+        u1.save()
+        data = u1.Rating
+    else:
+        data=0
+    #data = serializers.serialize("json", [Url.objects.filter(pk=id).first()])
     print(data)
     return JsonResponse(data,safe=False)

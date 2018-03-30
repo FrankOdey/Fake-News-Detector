@@ -63,7 +63,7 @@
 					<i data-id="{{o.id}}" class="far fa-thumbs-down"></i>
 				</button> 
 	    <td>{{o.Classification}}</td>
-	    <td id="{{o.id}}">{{o.Voting}}</td>
+	    <td id="{{o.id}}">{{o.Rating}}</td>
 	  </tr>
 	 {% endfor %}
 	</table>
@@ -77,7 +77,7 @@
 	      data: {id: JSON.stringify(s)},
 	      dataType: 'json',
 	      success: function (data) {
-	      	$('#'+s).html(JSON.parse(data)[0].fields.Voting)
+	      	$('#'+s).html(data)
 	      }
 	    });
       }
@@ -87,7 +87,14 @@
 	      data: {id: JSON.stringify(s)},
 	      dataType: 'json',
 	      success: function (data) {
-	      	$('#'+s).html(JSON.parse(data)[0].fields.Voting)
+	      	// temp1 = JSON.parse(data)[0].fields.Likes
+	      	// temp2 = JSON.parse(data)[0].fields.Disikes
+	      	$('#'+s).html(data)
+			// if(temp1!=0 || temp2 !=0){
+			// 	temp3=Number(temp1)+Number(temp2)
+			// 	console.log(temp3)
+	  //     		$('#'+s).html(temp3)
+	      	// }
 	      }
 	    });
       }

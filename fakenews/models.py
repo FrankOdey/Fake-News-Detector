@@ -6,4 +6,6 @@ class Url(models.Model):
 	Title = models.TextField(default='None')
 	Text = models.TextField(default='None')
 	Classification = models.CharField(max_length=4)
-	Voting = models.IntegerField()
+	Likes = models.IntegerField(default='0')
+	Dislikes = models.IntegerField(default='0')
+	Rating = models.DecimalField(max_digits=3,default='0',decimal_places=2)
