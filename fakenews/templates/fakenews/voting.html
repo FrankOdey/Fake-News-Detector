@@ -55,14 +55,43 @@
 	 {% for o in urls %}
 	  <tr>
 	    <td><a href="{{ o.Url }}" target="_blank">{{o.Title}}</a></td>
-			<td><button type="button"><i class="far fa-thumbs-up"></i></button> <button><i class="far fa-thumbs-down"></i>
-
-</button> 
+			<td>
+				<button onclick="handleupvote({{o.id}})" type="button">
+					<i data-id="{{o.id}}" class="far fa-thumbs-up"></i>
+				</button> 
+				<button onclick="handledownvote({{o.id}})">
+					<i data-id="{{o.id}}" class="far fa-thumbs-down"></i>
+				</button> 
 	    <td>{{o.Classification}}</td>
-	    <td>{{o.Voting}}</td>
+	    <td id="{{o.id}}">{{o.Voting}}</td>
 	  </tr>
 	 {% endfor %}
 	</table>
 	
 </body>
+  <script>
+      
+      function handleupvote(s){
+      	$.ajax({
+	      url: '/ajax/upvote',
+	      data: {id: JSON.stringify(s)},
+	      dataType: 'json',
+	      success: function (data) {
+	      	$('#'+s).html(JSON.parse(data)[0].fields.Voting)
+	      }
+	    });
+      }
+      function handledownvote(s){
+      	$.ajax({
+	      url: '/ajax/downvote',
+	      data: {id: JSON.stringify(s)},
+	      dataType: 'json',
+	      success: function (data) {
+	      	$('#'+s).html(JSON.parse(data)[0].fields.Voting)
+	      }
+	    });
+      }
+
+  </script>
+
 </html>

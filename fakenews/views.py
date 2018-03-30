@@ -9,6 +9,9 @@ from django.contrib.auth import authenticate, login , logout
 from django import forms
 from .models import Url
 
+from django.http import JsonResponse
+from django.core import serializers
+
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
     last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
@@ -67,3 +70,20 @@ def register_view(request):
 def voting_view(request):
     urls = Url.objects.all()
     return render(request,"fakenews/voting.html",{'urls':urls})
+
+def upvote(request):
+    id = request.GET.get('id')
+    u1 = Url.objects.get(pk=id)
+    u1.Voting+=1
+    u1.save()
+    data = serializers.serialize("json", [Url.objects.filter(pk=id).first()])
+    print(data)
+    return JsonResponse(data,safe=False)
+def downvote(request):
+    id = request.GET.get('id')
+    u1 = Url.objects.get(pk=id)
+    u1.Voting-=1
+    u1.save()
+    data = serializers.serialize("json", [Url.objects.filter(pk=id).first()])
+    print(data)
+    return JsonResponse(data,safe=False)
