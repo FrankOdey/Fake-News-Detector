@@ -19,7 +19,7 @@ button {
   transition: 0.3s;
   display: inline-block;
   text-decoration: none;
-  font-family:'amiko';
+  font-family:'Raleway';
   cursor: pointer;
 }
     
@@ -30,16 +30,17 @@ button:hover {opacity: 1}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{% static 'fakenews/js/js.js' %}"></script>
     <link rel="stylesheet" href="{% static 'fakenews/index.css' %}">
-    <link href='https://fonts.googleapis.com/css?family=Amiko' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
    
     </head>
 <body>
     
-    <div id="wholeupper"><h1>Fake News Detector</h1>
+    <div id="wholeupper"><img src= "{% static  'fakenews/trump.png' %}" width="60px" height="75px"></a>
     <nav id="bar">
+        
         <li id="page2"><a href="#">Home</a></li>
         {% if user.is_authenticated %}
-        <li>User: {{ user.get_username }}</li>
+        <li> {{ user.get_username }}</li>
         <li id="page1"><a href="/logout">Logout</a></li>
         <li id="page1"><a href="/voting">Votings</a></li>
         {% else %}

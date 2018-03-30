@@ -6,24 +6,37 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{% static 'fakenews/js/js.js' %}"></script>
     <link rel="stylesheet" href="{% static 'fakenews/index.css' %}">
-    
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
    <style type="text/css">
  
    	body{
 	
-	font-family:'amiko';
+	font-family:'Raleway';
 font-size: 25px;
+
+
+}
+#results{
+    text-align: center;
+    margin-top: 60px;
+}
+#results li{
+    color: black;
+    margin-top: 10px;
+     line-height: 1.8;
 }
 
+#result1{
 
-#results h2{
-	font-size: 35px;
+    text-align: center;
+    font-size: 40px;
+    
 }
    </style>
-   <link href='https://fonts.googleapis.com/css?family=Amiko' rel='stylesheet'>
+   <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
 </head>
 <body>
-     <div id="wholeupper"><h1>Fake News Detector</h1>
+     <div id="wholeupper"><a href="/"><img src= "{% static  'fakenews/trump.png' %}" width="60px" height="75px"></a>
     <nav id="bar">
         <li id="page2"><a href="/">Home</a></li>
         
@@ -34,19 +47,13 @@ font-size: 25px;
     </div>
 
 <div id="results">
-<h2>Result :</h2>
-{{ result }}
+<strong id="result1">{{ result }}</strong>
 <br>
-<h2>Summary</h2>
-<ul>
-<li> Word Count : {{ wordcount }}</li>
-<li> Title Count : {{ titlecount }}</li>
-<li> Punctuation Count : {{ punccount }}</li>
-<li> Gunning Fog : {{ gunningfog }}</li>
-<li> Readability Index : {{ readability }}</li>
 
-    <li>Title : {{ articletitle }} </li>
-    <li>Text: {{ articletext }} </li>
+<ul>
+
+    <li style="font-size:30px;"><strong>{{ articletitle }}</strong> </li><br>
+    <li> {{ articletext }} </li><br>
 </ul>
 </div>
     
