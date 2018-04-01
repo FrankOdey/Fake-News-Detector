@@ -57,7 +57,7 @@ def classify_url(request):
         print(article.title)
         print(article.text)
         result, features = predict_pickle.classify(article.title, article.text)
-        u1 = Url(Url=newsurl,Title=article.title,Text=article.text,Classification=result,Voting=0)
+        u1 = Url(Url=newsurl,Title=article.title,Text=article.text,Classification=result)
         u1.save()
         return render(request, "fakenews/classify.html", {'articletitle': article.title, 'articletext': article.text,'result': result, 'wordcount': features[0][0], 'titlecount':features[0][1], 'punccount': features[0][2], 'gunningfog': features[0][4], 'readability':features[0][5]})
 def logout_view(request):
