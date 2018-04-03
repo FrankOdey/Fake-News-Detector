@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login , logout
 from django import forms
 from .models import Url
+from .models import Vote
 
 from django.http import JsonResponse
 from django.core import serializers
@@ -69,7 +70,11 @@ def register_view(request):
 
 def voting_view(request):
     urls = Url.objects.all()
-    return render(request,"fakenews/voting.html",{'urls':urls})
+    votes = request.user.url_set.all()
+    print(votes)
+    for r in votes:
+        print(r.Url)
+    return render(request,"fakenews/voting.html",{'urls':urls,'votes':votes})
 
 def upvote(request):
     id = request.GET.get('id')
