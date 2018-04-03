@@ -81,6 +81,14 @@ def upvote(request):
     u1 = Url.objects.get(pk=id)
     u1.Likes+=1
     u1.save()
+    if not request.user.url_set.get(url=u1):
+        v = Vote(url=u1,user=request.user,Like=True)
+        v.save()
+    else:
+        v = Vote.objects.get(url=u1,user=request.user)
+        v.Like = True
+        v.Dislike = False
+        v.save()
     if (u1.Dislikes+u1.Likes) > 0:
         u1.Rating = u1.Likes/(u1.Dislikes+u1.Likes)
         u1.save()
@@ -95,6 +103,14 @@ def downvote(request):
     u1 = Url.objects.get(pk=id)
     u1.Dislikes+=1
     u1.save()
+    if not request.user.url_set.get(url=u1):
+        v = Vote(url=u1,user=request.user,Dislike=True)
+        v.save()
+    else:
+        v = Vote.objects.get(url=u1,user=request.user)
+        v.Like = False
+        v.Dislike = True
+        v.save()
     if (u1.Dislikes+u1.Likes) > 0:
         u1.Rating = u1.Likes/(u1.Dislikes+u1.Likes)
         u1.save()
